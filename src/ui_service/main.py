@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Request, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
-from src.config import UPLOADED_FILES_PATH
-import uvicorn
 from src import database
+from src.config import UPLOADED_FILES_PATH
+from src.md5_service.worker import get_md5_hash
+import uvicorn
 
 app = FastAPI()
 
@@ -21,10 +22,14 @@ def main_page(request: Request):
 async def upload_and_queue(file: UploadFile = File(...)):
     file_id = token_hex(10)
     file_path = f"{UPLOADED_FILES_PATH}\{file_id}"
+
     with open(file_path, "wb") as f:
         content = await file.read()
         f.write(content)
+
     database.insert_data(file.filename, file_id)
+
+    print(get_md5_hash(file_path))
     return {"success": True, "file_path": file_path, "file_id": file_id, "message": "File uploaded successfully"}
 
 
