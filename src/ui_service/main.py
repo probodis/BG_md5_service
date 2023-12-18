@@ -3,10 +3,13 @@ from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src.config import UPLOADED_FILES_PATH
 import uvicorn
+from src import database
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
+
+database.create_table()
 
 
 @app.get("/")
@@ -16,13 +19,13 @@ def main_page(request: Request):
 
 @app.post("/upload")
 async def upload_and_queue(file: UploadFile = File(...)):
-    file_ext = file.filename.split(".").pop()
-    file_name = token_hex(10)
-    file_path = f"{UPLOADED_FILES_PATH}\{file_name}.{file_ext}"
+    file_id = token_hex(10)
+    file_path = f"{UPLOADED_FILES_PATH}\{file_id}"
     with open(file_path, "wb") as f:
         content = await file.read()
         f.write(content)
-    return {"success": True, "file_path": file_path, "file_id": file_name, "message": "File uploaded successfully"}
+    database.insert_data(file.filename, file_id)
+    return {"success": True, "file_path": file_path, "file_id": file_id, "message": "File uploaded successfully"}
 
 
 @app.post("/upload-page")
