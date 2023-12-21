@@ -56,6 +56,13 @@
 
       {% block upload_status %}{% endblock %}
 
+		<form action="/result-page" method="get" class="mt-10">
+              <input name="task_id" id="task_id" class="rounded-full w-full h-9"/>
+          <button class="bg-lime-800 hover:bg-sky-700 w-full py-2 mt-4 text-sm rounded-full font-semibold text-white">Get hash</button>
+        </form>
+
+      {% block hashing_task_info %}{% endblock %}
+
   </main>
 
 </body>
