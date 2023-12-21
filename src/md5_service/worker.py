@@ -1,9 +1,13 @@
 import hashlib
+import time
+
 from celery import Celery
+from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
 
 
-celery = Celery('worker', broker='redis://localhost:6379')
-celery.control.inspect().active()
+result_backend = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+celery = Celery('worker', broker='redis://localhost:6379', result_backend=result_backend)
 
 
 @celery.task

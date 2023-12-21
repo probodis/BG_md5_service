@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src import database
 from src.config import UPLOADED_FILES_PATH
-from src.md5_service.worker import get_md5_hash
+from src.md5_service.worker import celery, get_md5_hash
 import uvicorn
 
 app = FastAPI()
@@ -38,6 +38,12 @@ async def upload_and_queue(file: UploadFile = File(...)):
 @app.post("/upload-page")
 def upload_page(request: Request, file: UploadFile = File(...), result=Depends(upload_and_queue)):
     return templates.TemplateResponse("upload_status.html", {"request": request, "uploading_result": result})
+
+
+@app.get("/result/{task_id}")
+def get_result_by_id(task_id: str):
+    result = celery.AsyncResult(task_id)
+    return {"status": result.status, "md5_hash": result.result}
 
 
 if __name__ == '__main__':
