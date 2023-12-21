@@ -29,8 +29,10 @@ async def upload_and_queue(file: UploadFile = File(...)):
 
     database.insert_data(file.filename, file_id)
 
-    print(get_md5_hash(file_path))
-    return {"success": True, "file_path": file_path, "file_id": file_id, "message": "File uploaded successfully"}
+    task = get_md5_hash.delay(file_path)
+
+    return {"success": True, "file_path": file_path, "file_id": file_id,
+            "task_id": task.id, "message": "File uploaded successfully"}
 
 
 @app.post("/upload-page")
