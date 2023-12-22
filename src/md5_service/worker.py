@@ -1,25 +1,30 @@
 import hashlib
-
+import redis
 from redlock import Redlock
 from celery import Celery
-from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER, LOG_PATH, REDIS_HOST, REDIS_PORT
+from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER, LOG_PATH, REDIS_HOST, REDIS_PORT, REDIS_DB_ID
 
 result_backend = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 celery = Celery('worker', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}', result_backend=result_backend)
 
-dlm = Redlock([{"host": REDIS_HOST, "port": REDIS_PORT, "db": 0}, ], retry_count=10, retry_delay=1)
+dlm = Redlock([{"host": REDIS_HOST, "port": REDIS_PORT, "db": REDIS_DB_ID}, ], retry_count=10, retry_delay=1)
+
+redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_ID)
 
 
 @celery.task
-def get_md5_hash(file_path):
-    with open(file_path, 'rb') as opened_file:
-        content = opened_file.read()
-        md5 = hashlib.md5()
-        md5.update(content)
+def get_md5_hash(file_id):
 
-        write_log(md5.hexdigest())
+    content = redis_client.get(file_id)
 
-        return md5.hexdigest()
+    md5 = hashlib.md5()
+    md5.update(content)
+
+    write_log(md5.hexdigest())
+
+    redis_client.delete(file_id)
+
+    return md5.hexdigest()
 
 
 def write_log(message: str):
