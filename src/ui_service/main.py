@@ -47,7 +47,7 @@ def get_result_by_id(task_id: str):
     return {"status": result.status, "md5_hash": result.result}
 
 
-@app.get("/result-page/")
+@app.get("/result-page")
 def result_page(request: Request, result=Depends(get_result_by_id)):
     message = result["md5_hash"] if result['status'] == "SUCCESS" else result["status"]
     return templates.TemplateResponse("result_page.html", {"request": request, "hashing_result": message})
