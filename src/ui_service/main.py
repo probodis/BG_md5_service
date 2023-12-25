@@ -4,7 +4,6 @@ from secrets import token_hex
 from src import database
 from src.md5_service.worker import celery, get_md5_hash, redis_client
 import uvicorn
-import redis
 
 app = FastAPI()
 
@@ -29,10 +28,10 @@ def upload_and_queue(file: UploadFile = File(...)):
 
     database.insert_data(file.filename, file_id)
 
-    task = get_md5_hash.delay(file_id)
+    task = get_md5_hash.apply_async((file_id,), task_id=file_id)
 
     return {"success": True, "file_id": file_id,
-            "task_id": task.id, "message": "File uploaded successfully"}
+            "message": "File uploaded successfully"}
 
 
 @app.post("/upload-page")
@@ -41,9 +40,9 @@ def upload_page(request: Request, file: UploadFile = File(...), result=Depends(u
 
 
 @app.get("/result")
-@app.get("/result/{task_id}")
-def get_result_by_id(task_id: str):
-    result = celery.AsyncResult(task_id)
+@app.get("/result/{file_id}")
+def get_result_by_id(file_id: str):
+    result = celery.AsyncResult(file_id)
     return {"status": result.status, "md5_hash": result.result}
 
 
