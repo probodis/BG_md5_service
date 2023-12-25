@@ -2,13 +2,13 @@ from fastapi import FastAPI, Request, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src import database
-from src.md5_service.worker import celery, get_md5_hash
+from src.md5_service.worker import celery, get_md5_hash, redis_client
 import uvicorn
 import redis
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="src/ui_service/templates")
 
 database.create_table()
 
@@ -24,7 +24,7 @@ def upload_and_queue(file: UploadFile = File(...)):
 
     with file.file as f:
         data = f.read()  # Read the file content as an array of bytes
-    redis_client = redis.Redis()
+
     redis_client.set(file_id, data)
 
     database.insert_data(file.filename, file_id)
@@ -53,5 +53,5 @@ def result_page(request: Request, result=Depends(get_result_by_id)):
     return templates.TemplateResponse("result_page.html", {"request": request, "hashing_result": message})
 
 
-if __name__ == '__main__':
-    uvicorn.run("main:app", host="127.0.0.1", reload=True)
+#if __name__ == '__main__':
+#    uvicorn.run("main:app", host="127.0.0.1", reload=True)
