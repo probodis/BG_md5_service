@@ -34,21 +34,30 @@ You can configure the required number of workers in the `docker-compose.yml` fil
 ## Usage
 1. After the build, visit the page <http://127.0.0.1:8000/>.
 You should see the main page:
-![scr1](https://github.com/probodis/BG_md5_service/assets/22256398/759e31f2-56e5-4ad5-9cfc-cace31395037)
+
+ ![scr1](https://github.com/probodis/BG_md5_service/assets/22256398/759e31f2-56e5-4ad5-9cfc-cace31395037)
 
 2. Select the file and click ***Upload***.
-![scr2_1](https://github.com/probodis/BG_md5_service/assets/22256398/581a4cb1-721b-4f86-9674-6c54a4e48555)
+   
+ ![scr2_1](https://github.com/probodis/BG_md5_service/assets/22256398/581a4cb1-721b-4f86-9674-6c54a4e48555)
 
 
 3. Copy the file ID.
+   
+ ![scr3_1](https://github.com/probodis/BG_md5_service/assets/22256398/c7a727f9-1ec2-4f4d-8dab-5fa766b46a9e)
 
-    ![scr3_1](https://github.com/probodis/BG_md5_service/assets/22256398/c7a727f9-1ec2-4f4d-8dab-5fa766b46a9e)
 
+4. Enter the ID of your file in the ***Enter the file ID:*** field.
+   
+ ![scr4_1](https://github.com/probodis/BG_md5_service/assets/22256398/fcb0cb10-4cf2-444e-a74e-06c488325e37)
 
-5. Enter the ID of your file in the ***Enter the file ID:*** field.
-![scr4_1](https://github.com/probodis/BG_md5_service/assets/22256398/fcb0cb10-4cf2-444e-a74e-06c488325e37)
+5. Press the ***Get hash*** button.
+    
+ ![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
 
-7. Press the ***Get hash*** button.
-![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
+6. You have received the md5 hash of your file.
+    
+#### Swagger UI
+You can also use the page http://127.0.0.1:8000/docs for endpoints research.
+ ![Снимок](https://github.com/probodis/BG_md5_service/assets/22256398/914511ba-5d28-424e-8aee-431c81b3d534)
 
-9. You have received the md5 hash of your file.
