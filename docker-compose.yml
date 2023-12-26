@@ -33,7 +33,7 @@ services:
   upload_api:
     container_name: upload_api
 
-    command: uvicorn src.ui_service.main:app --host "0.0.0.0" --port ${API_PORT}
+    command: uvicorn src.api_service.main:app --host "0.0.0.0" --port ${API_PORT}
     restart: always
 
     build:
@@ -53,7 +53,7 @@ services:
 
   celery_worker:
 
-    command: celery -A src.md5_service.worker:celery worker --loglevel=INFO
+    command: celery -A src.hashing_worker.worker:celery worker --loglevel=INFO
     restart: always
     deploy:
       mode: replicated

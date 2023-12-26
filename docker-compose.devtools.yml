@@ -17,7 +17,7 @@ services:
   flower:
     container_name: flower
 
-    command: celery -A src.md5_service.worker:celery flower --port=5555
+    command: celery -A src.hashing_worker.worker:celery flower --port=5555
     restart: always
 
     build:

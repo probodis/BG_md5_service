@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, UploadFile, File, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
-from src.md5_service.worker import celery, get_md5_hash, redis_client, redis
+from src.hashing_worker.worker import celery, get_md5_hash, redis_client, redis
 from src.config import FILE_EXPIRATION_TIME
 import logging
 import uvicorn
