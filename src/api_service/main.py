@@ -33,7 +33,7 @@ def upload_and_queue(file: UploadFile = File(...)):
         return {"success": False, "file_id": None,
                 "message": "File has not been uploaded. Internal error"}
 
-    task = get_md5_hash.apply_async((file_id,), task_id=file_id)
+    task = get_md5_hash.apply_async((file_id, file.filename), task_id=file_id)
 
     return {"success": True, "file_id": file_id,
             "message": "File uploaded successfully"}

@@ -1,4 +1,5 @@
 import hashlib
+from datetime import datetime
 import redis
 from redlock import Redlock
 from celery import Celery
@@ -13,14 +14,17 @@ redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_ID)
 
 
 @celery.task
-def get_md5_hash(file_id):
+def get_md5_hash(file_id, file_name):
 
     content = redis_client.get(file_id)
 
     md5 = hashlib.md5()
     md5.update(content)
 
-    write_log(md5.hexdigest())
+    write_log(f"{datetime.utcnow()};"
+              f"{file_id};"
+              f"{file_name};"
+              f"{md5.hexdigest()}")
 
     redis_client.delete(file_id)
 
@@ -28,7 +32,7 @@ def get_md5_hash(file_id):
 
 
 def write_log(message: str):
-    lock = dlm.lock("log_file", 5)
+    lock = dlm.lock("log_file", 5)  # Mutex based on https://redis.io/docs/manual/patterns/distributed-locks/
 
     with open(f"{LOG_PATH}", 'a+') as file:
         file.write(message + "\n")
