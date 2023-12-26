@@ -11,6 +11,66 @@ This repository contains the solution to a test task. The task was to implement 
 - SQLAlchemy
 - Docker
 
+### API endpoints
+
+#### Upload file (POST)
+
+Request URL: http://.../upload
+
+Curl: 
+```curl
+curl -X 'POST' \
+  'http://127.0.0.1:8000/upload' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@testfile.txt;type=text/plain'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "file_id": "cf1f2258f062d5b0dfd7",
+  "message": "File uploaded successfully"
+}
+```
+
+#### Get hash by File ID (GET)
+
+***Option 1:***
+Request URL: http://.../result/cf1f2258f062d5b0dfd7
+
+Curl:
+```
+curl -X 'GET' \
+  'http://127.0.0.1:8000/result/cf1f2258f062d5b0dfd7' \
+  -H 'accept: application/json'
+```
+***Option 2:***
+Request URL: http://.../result?file_id=cf1f2258f062d5b0dfd7
+
+Curl:
+```
+curl -X 'GET' \
+  'http://127.0.0.1:8000/result?file_id=cf1f2258f062d5b0dfd7' \
+  -H 'accept: application/json'
+```
+Response (success):
+```json
+{
+  "status": "SUCCESS",
+  "md5_hash": "05a671c66aefea124cc08b76ea6d30bb"
+}
+```
+Response (pending):
+```json
+{
+  "status": "PENDING",
+  "md5_hash": null
+}
+```
+
+
 ## Deployment
 1. Create `appdata` folder in the project folder. This folder is for the log file.
 2. Create a copy of the `env.sample` file and rename it to `.env`.
