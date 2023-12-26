@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src import database
 from src.md5_service.worker import celery, get_md5_hash, redis_client
+from src.config import FILE_EXPIRATION_TIME
 import uvicorn
 
 app = FastAPI()
@@ -24,7 +25,7 @@ def upload_and_queue(file: UploadFile = File(...)):
     with file.file as f:
         data = f.read()  # Read the file content as an array of bytes
 
-    redis_client.set(file_id, data)
+    redis_client.set(file_id, data, ex=FILE_EXPIRATION_TIME)
 
     database.insert_data(file.filename, file_id)
 
