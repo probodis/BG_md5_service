@@ -10,8 +10,6 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory="src/ui_service/templates")
 
-database.create_table()
-
 logger = logging.getLogger(__name__)
 
 
