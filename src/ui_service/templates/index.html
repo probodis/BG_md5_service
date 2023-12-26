@@ -56,11 +56,15 @@
 
       {% block upload_status %}{% endblock %}
 
-		<form action="/result-page" method="get" class="mt-10">
-              <input name="file_id" id="task_id" class="rounded-full w-full h-9"/>
+      <div class="mt-10">
+          <h2 class="text-center mb-1 font-sans font-semibold text-slate-700">
+              Enter the file ID:
+          </h2>
+        <form action="/result-page" method="get">
+              <input name="file_id" id="task_id" class="text-center text-stone-600 tracking-widest rounded-full w-full h-9"/>
           <button class="bg-lime-800 hover:bg-sky-700 w-full py-2 mt-4 text-sm rounded-full font-semibold text-white">Get hash</button>
         </form>
-
+      </div>
       {% block hashing_task_info %}{% endblock %}
 
   </main>

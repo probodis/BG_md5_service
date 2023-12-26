@@ -2,10 +2,14 @@
 
 {% block upload_status %}
 
-<div id="upload_status" class="grid items-center shadow-md mt-4 h-10 bg-zinc-50">
-    <p class="tracking-widest font-medium text-center text-cyan-700 ml-4 mr-4">
-        {{ uploading_result.file_id }}
-    </p>
+<div class="mt-4">
+    <h2 class="text-center mb-1 font-sans font-semibold text-slate-700">
+        Your file ID:
+    </h2>
+    <div id="upload_status" class="grid items-center shadow-md h-10 bg-zinc-50">
+        <p class="tracking-widest font-medium text-center text-cyan-700 ml-4 mr-4">
+            {{ uploading_result.file_id }}
+        </p>
+    </div>
 </div>
-
 {% endblock %}
