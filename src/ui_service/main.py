@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, UploadFile, File, Depends
+from fastapi import FastAPI, Request, UploadFile, File, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src import database
@@ -43,6 +43,8 @@ def upload_page(request: Request, file: UploadFile = File(...), result=Depends(u
 @app.get("/result")
 @app.get("/result/{file_id}")
 def get_result_by_id(file_id: str):
+    if len(file_id) == 0:
+        raise HTTPException(status_code=400, detail="The File ID cannot be empty")
     result = celery.AsyncResult(file_id)
     return {"status": result.status, "md5_hash": result.result}
 
