@@ -120,6 +120,17 @@ You should see the main page:
  ![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
     
 #### Swagger UI
+
 You can also use the page http://127.0.0.1:8000/docs for endpoints research.
+
  ![Снимок](https://github.com/probodis/BG_md5_service/assets/22256398/914511ba-5d28-424e-8aee-431c81b3d534)
 
+## ToDo
+* [ ] Use Redis as Celery background if need more performance;
+* [ ] Implement tests;
+* [ ] Implement competitive programming if need more performance;
+* [ ] Add full logging and handling of all possible errors;
+* [ ] Add case handling when the requested id does not exist - Return ERROR instead of PENDING;
+* [ ] Implement the deletion of old results if you do not want to store them forever;
+* [ ] Implement health checking to docker-compose;
+* [ ] Implement calculation of available memory in Redis when adding files. Return an error if there is no space.
