@@ -36,7 +36,7 @@ def upload_and_queue(file: UploadFile = File(...)):
 
 @app.post("/upload-page")
 def upload_page(request: Request, file: UploadFile = File(...), result=Depends(upload_and_queue)):
-    return templates.TemplateResponse("upload_status.html", {"request": request, "uploading_result": result})
+    return templates.TemplateResponse("upload_status_page.html", {"request": request, "uploading_result": result})
 
 
 @app.get("/result")
@@ -49,7 +49,7 @@ def get_result_by_id(file_id: str):
 @app.get("/result-page")
 def result_page(request: Request, result=Depends(get_result_by_id)):
     message = result["md5_hash"] if result['status'] == "SUCCESS" else result["status"]
-    return templates.TemplateResponse("result_page.html", {"request": request, "hashing_result": message})
+    return templates.TemplateResponse("hashing_result_page.html", {"request": request, "hashing_result": message})
 
 
 #if __name__ == '__main__':
