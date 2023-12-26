@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request, UploadFile, File, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
-from src import database
 from src.md5_service.worker import celery, get_md5_hash, redis_client, redis
 from src.config import FILE_EXPIRATION_TIME
 import logging
@@ -35,8 +34,6 @@ def upload_and_queue(file: UploadFile = File(...)):
         logger.error(f"Error saving a file {file_id} to Redis. Check Redis server.")
         return {"success": False, "file_id": None,
                 "message": "File has not been uploaded. Internal error"}
-
-    database.insert_data(file.filename, file_id)
 
     task = get_md5_hash.apply_async((file_id,), task_id=file_id)
 
