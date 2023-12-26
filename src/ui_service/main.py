@@ -2,8 +2,9 @@ from fastapi import FastAPI, Request, UploadFile, File, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
 from secrets import token_hex
 from src import database
-from src.md5_service.worker import celery, get_md5_hash, redis_client
+from src.md5_service.worker import celery, get_md5_hash, redis_client, redis
 from src.config import FILE_EXPIRATION_TIME
+import logging
 import uvicorn
 
 app = FastAPI()
@@ -11,6 +12,8 @@ app = FastAPI()
 templates = Jinja2Templates(directory="src/ui_service/templates")
 
 database.create_table()
+
+logger = logging.getLogger(__name__)
 
 
 @app.get("/")
@@ -25,7 +28,13 @@ def upload_and_queue(file: UploadFile = File(...)):
     with file.file as f:
         data = f.read()  # Read the file content as an array of bytes
 
-    redis_client.set(file_id, data, ex=FILE_EXPIRATION_TIME)
+    try:
+        redis_client.set(file_id, data, ex=FILE_EXPIRATION_TIME)
+
+    except redis.RedisError:
+        logger.error(f"Error saving a file {file_id} to Redis. Check Redis server.")
+        return {"success": False, "file_id": None,
+                "message": "File has not been uploaded. Internal error"}
 
     database.insert_data(file.filename, file_id)
 
