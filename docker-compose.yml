@@ -52,10 +52,12 @@ services:
 
 
   celery_worker:
-    container_name: celery_worker_0
 
     command: celery -A src.md5_service.worker:celery worker --loglevel=INFO
     restart: always
+    deploy:
+      mode: replicated
+      replicas: 2
 
     build:
       context: .
