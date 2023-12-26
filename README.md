@@ -15,7 +15,9 @@ This repository contains the solution to a test task. The task was to implement 
 1. Create `appdata` folder in the project folder. This folder is for the log file.
 2. Create a copy of the `env.sample` file and rename it to `.env`.
 3. Run docker deployment. You have two options:
+
     a. `docker-compose -f docker-compose.yml -f docker-compose.devtools.yml up --build` if you need core services and monitoring services (pgadmin and flower). Or:
+   
     b. `docker-compose up --build` if you need just API core services.
 
 #### Add or remove workers
@@ -52,10 +54,10 @@ You should see the main page:
  ![scr4_1](https://github.com/probodis/BG_md5_service/assets/22256398/fcb0cb10-4cf2-444e-a74e-06c488325e37)
 
 5. Press the ***Get hash*** button.
-    
- ![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
 
 6. You have received the md5 hash of your file.
+  
+ ![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
     
 #### Swagger UI
 You can also use the page http://127.0.0.1:8000/docs for endpoints research.
