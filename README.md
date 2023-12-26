@@ -34,16 +34,21 @@ You can configure the required number of workers in the `docker-compose.yml` fil
 ## Usage
 1. After the build, visit the page <http://127.0.0.1:8000/>.
 You should see the main page:
-[screen main-page]
+![scr1](https://github.com/probodis/BG_md5_service/assets/22256398/759e31f2-56e5-4ad5-9cfc-cace31395037)
 
 2. Select the file and click ***Upload***.
-[screen]
+![scr2_1](https://github.com/probodis/BG_md5_service/assets/22256398/581a4cb1-721b-4f86-9674-6c54a4e48555)
+
 
 3. Copy the file ID.
-[screen]
 
-4. Enter the ID of your file in the ***Enter the file ID:*** field .
-[screen]
-5. Press the ***Get hash*** button.
-[screen]
-6. You have received the md5 hash of your file.
+    ![scr3_1](https://github.com/probodis/BG_md5_service/assets/22256398/c7a727f9-1ec2-4f4d-8dab-5fa766b46a9e)
+
+
+5. Enter the ID of your file in the ***Enter the file ID:*** field.
+![scr4_1](https://github.com/probodis/BG_md5_service/assets/22256398/fcb0cb10-4cf2-444e-a74e-06c488325e37)
+
+7. Press the ***Get hash*** button.
+![scr5_1](https://github.com/probodis/BG_md5_service/assets/22256398/a469aee7-dceb-4008-9330-b4bc8d01fd82)
+
+9. You have received the md5 hash of your file.
